@@ -10,14 +10,17 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: frontend
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Debug Info
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -25,13 +28,23 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install
+        working-directory: frontend
+        run: |
+          echo "Installing dependencies in:"
+          pwd
+          npm install
 
       - name: Build
-        run: npm run build
+        working-directory: frontend
+        run: |
+          echo "Building in:"
+          pwd
+          npm run build
+          echo "Build directory contents:"
+          ls -la dist
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: frontend/dist 
+          publish_dir: ./frontend/dist 
