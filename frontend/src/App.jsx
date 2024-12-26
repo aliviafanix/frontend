@@ -6,7 +6,7 @@ function App() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/data')
+    fetch('http://192.168.0.113:3000/api/data')
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => setError(error.message))
